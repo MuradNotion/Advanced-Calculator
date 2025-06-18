@@ -8,45 +8,57 @@
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
       font-family: sans-serif;
-      height: 100vh;
+      background: #ffffff;
+      transition: background 0.3s, color 0.3s;
+      height: 100%;
+      width: 100%;
+    }
+
+    .scale-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #ffffff;
-      transition: background 0.3s, color 0.3s;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    .scalable {
+      transform-origin: top left;
+      transition: transform 0.3s ease;
     }
 
     .container {
       display: flex;
       gap: 20px;
       align-items: flex-start;
+      max-width: 460px;
     }
 
     .history {
       width: 180px;
-      height: 430px;
       border: 1px solid #ccc;
       border-radius: 12px;
       padding: 10px;
       background: #f0f0f0;
       color: #000;
       transition: background 0.3s, color 0.3s;
+      max-height: 352px;
       display: flex;
       flex-direction: column;
     }
 
     .history h4 {
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin: 10px 0;
       font-size: 1rem;
     }
 
     .controls {
       display: flex;
-      justify-content: space-between;
       gap: 5px;
       margin-bottom: 10px;
     }
@@ -65,18 +77,8 @@
       background-color: #bbb;
     }
 
-    .dark .controls button {
-      background-color: #444;
-      color: #fff;
-    }
-
-    .dark .controls button:hover {
-      background-color: #666;
-    }
-
     .calculator {
       width: max-content;
-      height: 430px;
       padding: 15px;
       border: 1px solid #ccc;
       border-radius: 12px;
@@ -123,25 +125,23 @@
       width: 100%;
     }
 
-    .history-content {
-      flex-grow: 1;
+    #historyContent {
+      flex: 1;
       overflow-y: auto;
-      margin-bottom: 8px;
     }
 
-    .see-more {
-      display: none;
-      font-size: 0.85em;
-      text-align: center;
+    #seeMore {
+      margin-top: 5px;
+      font-size: 0.9em;
+      border: none;
+      background: transparent;
+      color: #007BFF;
       cursor: pointer;
-      color: #007bff;
+      text-align: left;
+      padding: 4px 0;
     }
 
-    .see-more:hover {
-      text-decoration: underline;
-    }
-
-    /* Dark mode styles */
+    /* Dark mode */
     body.dark {
       background: #121212;
       color: #fff;
@@ -164,55 +164,80 @@
       color: #fff;
     }
 
+    .dark .controls button,
     .dark .buttons button {
       background: #444;
       color: #fff;
       border-color: #888;
     }
 
+    .dark .controls button:hover,
     .dark .buttons button:hover {
       background: #fff;
       color: #000;
     }
+
+    /* Responsive scaling */
+    @media (max-width: 600px) {
+      .scalable {
+        transform: scale(0.8);
+      }
+    }
+
+    @media (max-width: 450px) {
+      .scalable {
+        transform: scale(0.7);
+      }
+    }
+
+    @media (max-width: 350px) {
+      .scalable {
+        transform: scale(0.6);
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="history" id="historyPanel">
-      <div class="controls">
-        <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
-      </div>
-      <h4>History</h4>
-      <div id="historyContent" class="history-content"></div>
-      <div id="seeMore" class="see-more" onclick="toggleSeeMore()">See More</div>
-    </div>
+  <div class="scale-wrapper">
+    <div class="scalable">
+      <div class="container">
+        <div class="history" id="historyPanel">
+          <div class="controls">
+            <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
+          </div>
+          <h4>History</h4>
+          <div id="historyContent"></div>
+          <button id="seeMore" onclick="scrollHistory()">See More</button>
+        </div>
 
-    <div id="calculator" class="calculator">
-      <div id="display" class="display">0</div>
-      <div class="buttons">
-        <button onclick="clearDisplay()">AC</button>
-        <button onclick="backspace()">⌫</button>
-        <button onclick="appendValue('%')">%</button>
-        <button onclick="appendValue('/')">÷</button>
+        <div id="calculator" class="calculator">
+          <div id="display" class="display">0</div>
+          <div class="buttons">
+            <button onclick="clearDisplay()">AC</button>
+            <button onclick="backspace()">⌫</button>
+            <button onclick="appendValue('%')">%</button>
+            <button onclick="appendValue('/')">÷</button>
 
-        <button onclick="appendValue('7')">7</button>
-        <button onclick="appendValue('8')">8</button>
-        <button onclick="appendValue('9')">9</button>
-        <button onclick="appendValue('*')">×</button>
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('*')">×</button>
 
-        <button onclick="appendValue('4')">4</button>
-        <button onclick="appendValue('5')">5</button>
-        <button onclick="appendValue('6')">6</button>
-        <button onclick="appendValue('-')">−</button>
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button onclick="appendValue('-')">−</button>
 
-        <button onclick="appendValue('1')">1</button>
-        <button onclick="appendValue('2')">2</button>
-        <button onclick="appendValue('3')">3</button>
-        <button onclick="appendValue('+')">+</button>
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button onclick="appendValue('+')">+</button>
 
-        <button class="wide" onclick="appendValue('0')">0</button>
-        <button onclick="appendValue('.')">.</button>
-        <button onclick="calculate()">=</button>
+            <button class="wide" onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+            <button onclick="calculate()">=</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -257,7 +282,6 @@
       const entry = document.createElement('div');
       entry.textContent = `${expression} = ${result}`;
       historyContent.prepend(entry);
-      updateSeeMore();
     }
 
     function toggleDarkMode() {
@@ -270,34 +294,10 @@
       toggleBtn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
     }
 
-    function updateSeeMore() {
+    function scrollHistory() {
       const content = document.getElementById('historyContent');
-      const seeMore = document.getElementById('seeMore');
-
-      // Allow max 8 history entries before triggering See More
-      if (content.scrollHeight > content.clientHeight + 10) {
-        seeMore.style.display = 'block';
-      } else {
-        seeMore.style.display = 'none';
-      }
+      content.scrollTop += 100;
     }
-
-    function toggleSeeMore() {
-      const content = document.getElementById('historyContent');
-      const seeMore = document.getElementById('seeMore');
-
-      if (content.style.maxHeight === 'none') {
-        content.style.maxHeight = '200px';
-        content.style.overflowY = 'auto';
-        seeMore.textContent = 'See More';
-      } else {
-        content.style.maxHeight = 'none';
-        content.style.overflowY = 'visible';
-        seeMore.textContent = 'See Less';
-      }
-    }
-
-    window.addEventListener('load', updateSeeMore);
   </script>
 </body>
 </html>
