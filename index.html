@@ -49,7 +49,6 @@
       transition: background 0.3s, color 0.3s;
       display: flex;
       flex-direction: column;
-      height: 352px; /* Match calculator height */
     }
 
     .history h4 {
@@ -129,8 +128,6 @@
       flex: 1;
       overflow-y: auto;
     }
-
-    /* Removed #seeMore */
 
     /* Dark mode */
     body.dark {
@@ -283,6 +280,16 @@
       const toggleBtn = document.getElementById('themeToggle');
       toggleBtn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
     }
+
+    function matchPanelHeights() {
+      const calculator = document.getElementById('calculator');
+      const historyPanel = document.getElementById('historyPanel');
+      const calculatorHeight = calculator.offsetHeight;
+      historyPanel.style.height = calculatorHeight + 'px';
+    }
+
+    window.addEventListener('load', matchPanelHeights);
+    window.addEventListener('resize', matchPanelHeights);
   </script>
 </body>
 </html>
