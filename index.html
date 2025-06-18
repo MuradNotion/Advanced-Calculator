@@ -16,38 +16,34 @@
       color: #000;
       height: 100%;
       width: 100%;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    .wrapper {
       display: flex;
-      align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
+      align-items: center;
+      transition: background 0.3s, color 0.3s;
     }
 
     .container {
       display: flex;
-      flex-wrap: wrap;
       gap: 20px;
       align-items: flex-start;
+      flex-wrap: wrap;
       justify-content: center;
-      width: 100%;
       max-width: 900px;
+      padding: 20px;
     }
 
     .history {
-      width: 100%;
-      max-width: 200px;
+      width: 200px;
+      min-height: 352px;
       border: 1px solid #ccc;
       border-radius: 12px;
       padding: 10px;
       background: #f0f0f0;
-      display: flex;
-      flex-direction: column;
       color: #000;
       transition: background 0.3s, color 0.3s;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
     }
 
     .controls {
@@ -81,7 +77,6 @@
     }
 
     .calculator {
-      width: max-content;
       padding: 15px;
       border: 1px solid #ccc;
       border-radius: 12px;
@@ -164,37 +159,21 @@
       color: #000;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
       .container {
         flex-direction: column;
         align-items: center;
       }
 
-      .history {
+      .history, .calculator {
         width: 100%;
-        max-width: 100%;
-        order: 2;
-      }
-
-      .calculator {
-        order: 1;
-      }
-    }
-
-    @media (max-width: 400px) {
-      .buttons {
-        gap: 6px;
+        max-width: 320px;
       }
 
       .buttons button {
         height: 45px;
         width: 45px;
-        font-size: 0.9em;
-      }
-
-      .buttons .wide {
-        font-size: 0.9em;
       }
 
       .display {
@@ -204,43 +183,41 @@
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <div class="container">
-      <div class="history" id="historyPanel">
-        <div class="controls">
-          <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
-        </div>
-        <h4>History</h4>
-        <div id="historyContent"></div>
+  <div class="container">
+    <div class="history" id="historyPanel">
+      <div class="controls">
+        <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
       </div>
+      <h4>History</h4>
+      <div id="historyContent"></div>
+    </div>
 
-      <div id="calculator" class="calculator">
-        <div id="display" class="display">0</div>
-        <div class="buttons">
-          <button onclick="clearDisplay()">AC</button>
-          <button onclick="backspace()">⌫</button>
-          <button onclick="appendValue('%')">%</button>
-          <button onclick="appendValue('/')">÷</button>
+    <div id="calculator" class="calculator">
+      <div id="display" class="display">0</div>
+      <div class="buttons">
+        <button onclick="clearDisplay()">AC</button>
+        <button onclick="backspace()">⌫</button>
+        <button onclick="appendValue('%')">%</button>
+        <button onclick="appendValue('/')">÷</button>
 
-          <button onclick="appendValue('7')">7</button>
-          <button onclick="appendValue('8')">8</button>
-          <button onclick="appendValue('9')">9</button>
-          <button onclick="appendValue('*')">×</button>
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button onclick="appendValue('*')">×</button>
 
-          <button onclick="appendValue('4')">4</button>
-          <button onclick="appendValue('5')">5</button>
-          <button onclick="appendValue('6')">6</button>
-          <button onclick="appendValue('-')">−</button>
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button onclick="appendValue('-')">−</button>
 
-          <button onclick="appendValue('1')">1</button>
-          <button onclick="appendValue('2')">2</button>
-          <button onclick="appendValue('3')">3</button>
-          <button onclick="appendValue('+')">+</button>
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button onclick="appendValue('+')">+</button>
 
-          <button class="wide" onclick="appendValue('0')">0</button>
-          <button onclick="appendValue('.')">.</button>
-          <button onclick="calculate()">=</button>
-        </div>
+        <button class="wide" onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button onclick="calculate()">=</button>
       </div>
     </div>
   </div>
@@ -296,15 +273,6 @@
       const toggleBtn = document.getElementById('themeToggle');
       toggleBtn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
     }
-
-    function matchPanelHeights() {
-      const calculator = document.getElementById('calculator');
-      const history = document.getElementById('historyPanel');
-      history.style.height = calculator.offsetHeight + 'px';
-    }
-
-    window.addEventListener('load', matchPanelHeights);
-    window.addEventListener('resize', matchPanelHeights);
   </script>
 </body>
 </html>
