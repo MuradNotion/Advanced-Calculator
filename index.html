@@ -45,6 +45,7 @@
       display: flex;
       justify-content: space-between;
       gap: 5px;
+      margin-bottom: 10px;
     }
 
     .controls button {
@@ -122,6 +123,29 @@
       display: none;
     }
 
+    #toggleHistoryBtn {
+      margin-bottom: 10px;
+      font-size: 1em;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      background-color: #ddd;
+      cursor: pointer;
+    }
+
+    #toggleHistoryBtn:hover {
+      background-color: #bbb;
+    }
+
+    .dark #toggleHistoryBtn {
+      background-color: #444;
+      color: #fff;
+    }
+
+    .dark #toggleHistoryBtn:hover {
+      background-color: #666;
+    }
+
     /* Dark mode styles */
     body.dark {
       background: #121212;
@@ -159,40 +183,43 @@
 </head>
 <body>
   <div class="container">
-    <div id="historyPanel" class="history">
-      <div class="controls">
-        <button id="themeToggle" onclick="toggleDarkMode()">🌙</button>
-        <button onclick="toggleHistory()">Hide</button>
+    <div>
+      <button id="toggleHistoryBtn" onclick="toggleHistory()">Hide History</button>
+      <div id="historyPanel" class="history">
+        <div class="controls">
+          <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
+        </div>
+        <h4>History</h4>
+        <div id="historyContent"></div>
       </div>
-      <h4>History</h4>
-      <div id="historyContent"></div>
     </div>
 
     <div id="calculator" class="calculator">
       <div id="display" class="display">0</div>
       <div class="buttons">
         <button onclick="clearDisplay()">AC</button>
+        <button onclick="backspace()">⌫</button>
         <button onclick="appendValue('%')">%</button>
         <button onclick="appendValue('/')">÷</button>
-        <button onclick="appendValue('*')">×</button>
 
         <button onclick="appendValue('7')">7</button>
         <button onclick="appendValue('8')">8</button>
         <button onclick="appendValue('9')">9</button>
-        <button onclick="appendValue('-')">−</button>
+        <button onclick="appendValue('*')">×</button>
 
         <button onclick="appendValue('4')">4</button>
         <button onclick="appendValue('5')">5</button>
         <button onclick="appendValue('6')">6</button>
-        <button onclick="appendValue('+')">+</button>
+        <button onclick="appendValue('-')">−</button>
 
         <button onclick="appendValue('1')">1</button>
         <button onclick="appendValue('2')">2</button>
         <button onclick="appendValue('3')">3</button>
-        <button onclick="calculate()">=</button>
+        <button onclick="appendValue('+')">+</button>
 
         <button class="wide" onclick="appendValue('0')">0</button>
         <button onclick="appendValue('.')">.</button>
+        <button onclick="calculate()">=</button>
       </div>
     </div>
   </div>
@@ -223,6 +250,15 @@
       document.getElementById('display').textContent = '0';
     }
 
+    function backspace() {
+      const display = document.getElementById('display');
+      if (display.textContent.length > 1) {
+        display.textContent = display.textContent.slice(0, -1);
+      } else {
+        display.textContent = '0';
+      }
+    }
+
     function addToHistory(expression, result) {
       const historyContent = document.getElementById('historyContent');
       const entry = document.createElement('div');
@@ -237,12 +273,14 @@
       document.getElementById('display').classList.toggle('dark');
 
       const toggleBtn = document.getElementById('themeToggle');
-      toggleBtn.textContent = document.body.classList.contains('dark') ? '🌞' : '🌙';
+      toggleBtn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
     }
 
     function toggleHistory() {
       const panel = document.getElementById('historyPanel');
+      const button = document.getElementById('toggleHistoryBtn');
       panel.classList.toggle('hidden');
+      button.textContent = panel.classList.contains('hidden') ? 'Show History' : 'Hide History';
     }
   </script>
 </body>
