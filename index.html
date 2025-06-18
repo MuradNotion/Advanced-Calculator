@@ -119,33 +119,6 @@
       width: 100%;
     }
 
-    #historyPanel.hidden {
-      display: none;
-    }
-
-    #toggleHistoryBtn {
-      margin-bottom: 10px;
-      font-size: 1em;
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: none;
-      background-color: #ddd;
-      cursor: pointer;
-    }
-
-    #toggleHistoryBtn:hover {
-      background-color: #bbb;
-    }
-
-    .dark #toggleHistoryBtn {
-      background-color: #444;
-      color: #fff;
-    }
-
-    .dark #toggleHistoryBtn:hover {
-      background-color: #666;
-    }
-
     /* Dark mode styles */
     body.dark {
       background: #121212;
@@ -183,15 +156,12 @@
 </head>
 <body>
   <div class="container">
-    <div>
-      <button id="toggleHistoryBtn" onclick="toggleHistory()">Hide History</button>
-      <div id="historyPanel" class="history">
-        <div class="controls">
-          <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
-        </div>
-        <h4>History</h4>
-        <div id="historyContent"></div>
+    <div class="history" id="historyPanel">
+      <div class="controls">
+        <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
       </div>
+      <h4>History</h4>
+      <div id="historyContent"></div>
     </div>
 
     <div id="calculator" class="calculator">
@@ -274,13 +244,6 @@
 
       const toggleBtn = document.getElementById('themeToggle');
       toggleBtn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
-    }
-
-    function toggleHistory() {
-      const panel = document.getElementById('historyPanel');
-      const button = document.getElementById('toggleHistoryBtn');
-      panel.classList.toggle('hidden');
-      button.textContent = panel.classList.contains('hidden') ? 'Show History' : 'Hide History';
     }
   </script>
 </body>
