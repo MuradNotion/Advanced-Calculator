@@ -3,20 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <title>Smart Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * {
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
       margin: 0;
-      padding: 40px;
+      padding: 0;
       font-family: sans-serif;
       background: transparent;
-      color: #000;
+    }
+
+    .wrapper {
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
+      padding: 20px;
+      transform-origin: top center;
     }
 
     .container {
@@ -24,6 +29,7 @@
       gap: 20px;
       align-items: flex-start;
       border-radius: 16px;
+      flex-wrap: wrap;
     }
 
     .history {
@@ -149,57 +155,70 @@
       color: #000;
     }
 
-    /* Responsive scale (optional) */
-    @media (max-width: 600px) {
-      .container {
-        transform: scale(0.85);
-        transform-origin: top center;
+    /* Responsive scale */
+    @media (max-width: 700px) {
+      .wrapper {
+        transform: scale(0.9);
       }
     }
 
-    @media (max-width: 400px) {
-      .container {
+    @media (max-width: 600px) {
+      .wrapper {
+        transform: scale(0.8);
+      }
+    }
+
+    @media (max-width: 450px) {
+      .wrapper {
         transform: scale(0.7);
+      }
+    }
+
+    @media (max-width: 350px) {
+      .wrapper {
+        transform: scale(0.6);
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="history" id="historyPanel">
-      <div class="controls">
-        <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
+  <div class="wrapper">
+    <div class="container">
+      <div class="history" id="historyPanel">
+        <div class="controls">
+          <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
+        </div>
+        <h4>History</h4>
+        <div id="historyContent"></div>
       </div>
-      <h4>History</h4>
-      <div id="historyContent"></div>
-    </div>
 
-    <div id="calculator" class="calculator">
-      <div id="display" class="display">0</div>
-      <div class="buttons">
-        <button onclick="clearDisplay()">AC</button>
-        <button onclick="backspace()">⌫</button>
-        <button onclick="appendValue('%')">%</button>
-        <button onclick="appendValue('/')">÷</button>
+      <div id="calculator" class="calculator">
+        <div id="display" class="display">0</div>
+        <div class="buttons">
+          <button onclick="clearDisplay()">AC</button>
+          <button onclick="backspace()">⌫</button>
+          <button onclick="appendValue('%')">%</button>
+          <button onclick="appendValue('/')">÷</button>
 
-        <button onclick="appendValue('7')">7</button>
-        <button onclick="appendValue('8')">8</button>
-        <button onclick="appendValue('9')">9</button>
-        <button onclick="appendValue('*')">×</button>
+          <button onclick="appendValue('7')">7</button>
+          <button onclick="appendValue('8')">8</button>
+          <button onclick="appendValue('9')">9</button>
+          <button onclick="appendValue('*')">×</button>
 
-        <button onclick="appendValue('4')">4</button>
-        <button onclick="appendValue('5')">5</button>
-        <button onclick="appendValue('6')">6</button>
-        <button onclick="appendValue('-')">−</button>
+          <button onclick="appendValue('4')">4</button>
+          <button onclick="appendValue('5')">5</button>
+          <button onclick="appendValue('6')">6</button>
+          <button onclick="appendValue('-')">−</button>
 
-        <button onclick="appendValue('1')">1</button>
-        <button onclick="appendValue('2')">2</button>
-        <button onclick="appendValue('3')">3</button>
-        <button onclick="appendValue('+')">+</button>
+          <button onclick="appendValue('1')">1</button>
+          <button onclick="appendValue('2')">2</button>
+          <button onclick="appendValue('3')">3</button>
+          <button onclick="appendValue('+')">+</button>
 
-        <button class="wide" onclick="appendValue('0')">0</button>
-        <button onclick="appendValue('.')">.</button>
-        <button onclick="calculate()">=</button>
+          <button class="wide" onclick="appendValue('0')">0</button>
+          <button onclick="appendValue('.')">.</button>
+          <button onclick="calculate()">=</button>
+        </div>
       </div>
     </div>
   </div>
