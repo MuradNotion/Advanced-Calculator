@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Smart Calculator</title>
+  <title>Minimal Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * {
       box-sizing: border-box;
@@ -11,104 +12,48 @@
     html, body {
       margin: 0;
       padding: 0;
-      font-family: sans-serif;
       height: 100%;
       width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: sans-serif;
       background: transparent;
-    }
-
-    .scale-wrapper {
-      /* container that scales */
-      transform-origin: top left;
-      transition: transform 0.3s ease;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .container {
-      display: flex;
-      gap: 20px;
-      align-items: stretch;
-      max-width: 460px;
-    }
-
-    .history {
-      width: 180px;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      padding: 10px;
-      background: #f0f0f0;
-      color: #000;
-      max-height: 352px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .history h4 {
-      margin: 10px 0;
-      font-size: 1rem;
-    }
-
-    .controls {
-      display: flex;
-      gap: 5px;
-      margin-bottom: 10px;
-    }
-
-    .controls button {
-      flex: 1;
-      font-size: 1em;
-      padding: 8px;
-      border-radius: 6px;
-      border: none;
-      background-color: #ddd;
-      cursor: pointer;
-    }
-
-    .controls button:hover {
-      background-color: #bbb;
+      justify-content: flex-start;
+      align-items: flex-start;
     }
 
     .calculator {
-      width: max-content;
-      padding: 15px;
+      margin: 20px;
+      padding: 20px;
       border: 1px solid #ccc;
-      border-radius: 12px;
+      border-radius: 16px;
       background: #fff;
       color: #000;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      min-height: 352px;
-      box-sizing: border-box;
+      gap: 20px;
+      transform-origin: top left;
     }
 
     .display {
-      font-size: 1.8em;
+      font-size: 2em;
       text-align: right;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 8px;
+      padding: 15px 20px;
+      border-radius: 12px;
       background: #f2f2f2;
-      min-width: 220px;
-      box-sizing: border-box;
+      user-select: none;
+      min-width: 260px;
     }
 
     .buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      gap: 15px;
     }
 
     .buttons button {
       width: 100%;
       aspect-ratio: 1 / 1;
-      font-size: 1em;
+      font-size: 1.2em;
       border-radius: 50%;
       border: 1px solid #000;
       background: #fff;
@@ -119,33 +64,10 @@
       justify-content: center;
       align-items: center;
       padding: 0;
+      user-select: none;
     }
 
     .buttons button:hover {
-      background: #000;
-      color: #fff;
-    }
-
-    .buttons .wide {
-      grid-column: span 2;
-      border-radius: 25px;
-      width: 100%;
-      aspect-ratio: auto;
-      height: 50px; /* fixed height for wide button */
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1em;
-      border-radius: 25px;
-      border: 1px solid #000;
-      background: #fff;
-      color: #000;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .buttons .wide:hover {
       background: #000;
       color: #fff;
     }
@@ -162,89 +84,118 @@
       border-color: #444;
     }
 
-    .history.dark {
-      background: #222;
-      color: #fff;
-      border-color: #444;
-    }
-
     .display.dark {
       background: #333;
       color: #fff;
     }
 
-    .dark .controls button,
     .dark .buttons button {
       background: #444;
       color: #fff;
       border-color: #888;
     }
 
-    .dark .controls button:hover,
     .dark .buttons button:hover {
       background: #fff;
       color: #000;
     }
 
+    /* History Panel */
+    .history-panel {
+      margin: 20px;
+      padding: 20px;
+      width: 200px;
+      max-height: 500px;
+      overflow-y: auto;
+      background: #fafafa;
+      border: 1px solid #ccc;
+      border-radius: 16px;
+      font-size: 0.9em;
+    }
+
+    .history-panel h3 {
+      margin-top: 0;
+      font-size: 1.1em;
+      text-align: center;
+    }
+
+    .history-panel ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .history-panel li {
+      padding: 5px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    /* Dark mode history */
+    body.dark .history-panel {
+      background: #2a2a2a;
+      color: #fff;
+      border-color: #444;
+    }
+
+    body.dark .history-panel li {
+      border-color: #555;
+    }
+
     /* Responsive scaling */
     @media (max-width: 600px) {
-      .scale-wrapper {
-        transform: scale(0.8);
+      .calculator {
+        transform: scale(0.85);
       }
     }
 
     @media (max-width: 450px) {
-      .scale-wrapper {
-        transform: scale(0.7);
+      .calculator {
+        transform: scale(0.75);
       }
     }
 
     @media (max-width: 350px) {
-      .scale-wrapper {
-        transform: scale(0.6);
+      .calculator {
+        transform: scale(0.65);
       }
     }
   </style>
 </head>
 <body>
-  <div class="scale-wrapper" id="scaleWrapper">
-    <div class="container">
-      <div class="history" id="historyPanel">
-        <div class="controls">
-          <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
-        </div>
-        <h4>History</h4>
-        <div id="historyContent" style="flex:1; overflow-y:auto;"></div>
+  <div style="display: flex; flex-direction: row; align-items: flex-start;">
+    <div id="calculator" class="calculator">
+      <div id="display" class="display">0</div>
+      <div class="buttons">
+        <button onclick="clearDisplay()">AC</button>
+        <button onclick="backspace()">⌫</button>
+        <button onclick="appendValue('%')">%</button>
+        <button onclick="appendValue('/')">÷</button>
+
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button onclick="appendValue('*')">×</button>
+
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button onclick="appendValue('-')">−</button>
+
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button onclick="appendValue('+')">+</button>
+
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="toggleDarkMode()" id="themeToggle">D</button>
       </div>
+    </div>
 
-      <div id="calculator" class="calculator">
-        <div id="display" class="display">0</div>
-        <div class="buttons">
-          <button onclick="clearDisplay()">AC</button>
-          <button onclick="backspace()">⌫</button>
-          <button onclick="appendValue('%')">%</button>
-          <button onclick="appendValue('/')">÷</button>
-
-          <button onclick="appendValue('7')">7</button>
-          <button onclick="appendValue('8')">8</button>
-          <button onclick="appendValue('9')">9</button>
-          <button onclick="appendValue('*')">×</button>
-
-          <button onclick="appendValue('4')">4</button>
-          <button onclick="appendValue('5')">5</button>
-          <button onclick="appendValue('6')">6</button>
-          <button onclick="appendValue('-')">−</button>
-
-          <button onclick="appendValue('1')">1</button>
-          <button onclick="appendValue('2')">2</button>
-          <button onclick="appendValue('3')">3</button>
-          <button onclick="appendValue('+')">+</button>
-
-          <button class="wide" onclick="appendValue('0')">0</button>
-          <button onclick="appendValue('.')">.</button>
-          <button onclick="calculate()">=</button>
-        </div>
-      </div>
+    <div id="history" class="history-panel">
+      <h3>History</h3>
+      <ul id="historyList"></ul>
     </div>
   </div>
 
@@ -264,10 +215,19 @@
         const expression = display.textContent.replace(/÷/g, '/').replace(/×/g, '*');
         const result = eval(expression);
         display.textContent = result;
+
+        // Save to history
         addToHistory(expression, result);
       } catch {
         display.textContent = 'Error';
       }
+    }
+
+    function addToHistory(expression, result) {
+      const historyList = document.getElementById('historyList');
+      const li = document.createElement('li');
+      li.textContent = `${expression} = ${result}`;
+      historyList.prepend(li);
     }
 
     function clearDisplay() {
@@ -283,21 +243,13 @@
       }
     }
 
-    function addToHistory(expression, result) {
-      const historyContent = document.getElementById('historyContent');
-      const entry = document.createElement('div');
-      entry.textContent = `${expression} = ${result}`;
-      historyContent.prepend(entry);
-    }
-
     function toggleDarkMode() {
       document.body.classList.toggle('dark');
       document.getElementById('calculator').classList.toggle('dark');
-      document.getElementById('historyPanel').classList.toggle('dark');
       document.getElementById('display').classList.toggle('dark');
 
       const toggleBtn = document.getElementById('themeToggle');
-      toggleBtn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
+      toggleBtn.textContent = document.body.classList.contains('dark') ? 'L' : 'D';
     }
   </script>
 </body>
