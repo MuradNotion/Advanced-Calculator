@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Advanced Calculator</title>
+  <title>Minimal Calculator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * {
@@ -24,6 +24,8 @@
     .calculator {
       margin: 20px;
       padding: 20px;
+      width: 600px;
+      height: 520px;
       border: 1px solid #ccc;
       border-radius: 16px;
       background: #fff;
@@ -32,7 +34,6 @@
       flex-direction: row;
       gap: 20px;
       transform-origin: top left;
-      min-width: 600px;
     }
 
     .history-panel {
@@ -141,28 +142,21 @@
     }
 
     /* Responsive scaling */
-    @media (max-width: 800px) {
+    @media (max-width: 700px) {
       .calculator {
-        flex-direction: column;
         transform: scale(0.85);
-      }
-
-      .history-panel,
-      .main-calc {
-        width: 100%;
-      }
-
-      .history-panel {
-        border-right: none;
-        border-bottom: 1px solid #ddd;
-        padding-right: 0;
-        padding-bottom: 10px;
       }
     }
 
     @media (max-width: 500px) {
       .calculator {
         transform: scale(0.75);
+      }
+    }
+
+    @media (max-width: 400px) {
+      .calculator {
+        transform: scale(0.65);
       }
     }
   </style>
