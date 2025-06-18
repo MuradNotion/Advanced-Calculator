@@ -27,31 +27,32 @@
 
     .history {
       width: 180px;
+      height: 370px;
       border: 1px solid #ccc;
       border-radius: 12px;
       padding: 10px;
       background: #f0f0f0;
       color: #000;
       transition: background 0.3s, color 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
 
     .history h4 {
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin: 5px 0 10px;
       font-size: 1rem;
     }
 
     .controls {
       display: flex;
       justify-content: space-between;
-      gap: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     .controls button {
-      flex: 1;
       font-size: 1em;
-      padding: 8px;
+      padding: 6px;
       border-radius: 6px;
       border: none;
       background-color: #ddd;
@@ -62,13 +63,27 @@
       background-color: #bbb;
     }
 
-    .dark .controls button {
-      background-color: #444;
-      color: #fff;
+    .history-content-wrapper {
+      flex-grow: 1;
+      overflow: hidden;
+      position: relative;
     }
 
-    .dark .controls button:hover {
-      background-color: #666;
+    #historyContent {
+      overflow-y: auto;
+      max-height: 100%;
+      padding-right: 5px;
+    }
+
+    #seeMoreBtn {
+      display: none;
+      font-size: 0.9em;
+      padding: 4px 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: none;
+      background-color: #ccc;
+      cursor: pointer;
     }
 
     .calculator {
@@ -119,7 +134,7 @@
       width: 100%;
     }
 
-    /* Dark mode styles */
+    /* Dark Mode */
     body.dark {
       background: #121212;
       color: #fff;
@@ -152,6 +167,17 @@
       background: #fff;
       color: #000;
     }
+
+    .dark .controls button,
+    .dark #seeMoreBtn {
+      background-color: #444;
+      color: #fff;
+    }
+
+    .dark .controls button:hover,
+    .dark #seeMoreBtn:hover {
+      background-color: #666;
+    }
   </style>
 </head>
 <body>
@@ -161,7 +187,10 @@
         <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
       </div>
       <h4>History</h4>
-      <div id="historyContent"></div>
+      <div class="history-content-wrapper">
+        <div id="historyContent"></div>
+      </div>
+      <button id="seeMoreBtn" onclick="toggleHistoryExpand()">See More</button>
     </div>
 
     <div id="calculator" class="calculator">
@@ -234,6 +263,7 @@
       const entry = document.createElement('div');
       entry.textContent = `${expression} = ${result}`;
       historyContent.prepend(entry);
+      checkHistoryOverflow();
     }
 
     function toggleDarkMode() {
@@ -244,6 +274,27 @@
 
       const toggleBtn = document.getElementById('themeToggle');
       toggleBtn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
+    }
+
+    function checkHistoryOverflow() {
+      const historyContent = document.getElementById('historyContent');
+      const panel = document.getElementById('historyPanel');
+      const seeMoreBtn = document.getElementById('seeMoreBtn');
+      if (historyContent.scrollHeight > historyContent.clientHeight) {
+        seeMoreBtn.style.display = 'block';
+      }
+    }
+
+    function toggleHistoryExpand() {
+      const historyContent = document.getElementById('historyContent');
+      const seeMoreBtn = document.getElementById('seeMoreBtn');
+      if (historyContent.style.maxHeight === '100%') {
+        historyContent.style.maxHeight = '100px';
+        seeMoreBtn.textContent = 'See More';
+      } else {
+        historyContent.style.maxHeight = '100%';
+        seeMoreBtn.textContent = 'See Less';
+      }
     }
   </script>
 </body>
