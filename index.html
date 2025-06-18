@@ -13,67 +13,71 @@
       padding: 0;
       font-family: sans-serif;
       background: #ffffff;
-      transition: background 0.3s, color 0.3s;
+      color: #000;
       height: 100%;
       width: 100%;
+      transition: background 0.3s, color 0.3s;
     }
 
-    .scale-wrapper {
+    .wrapper {
       display: flex;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-    }
-
-    .scalable {
-      transform-origin: top left;
-      transition: transform 0.3s ease;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
     }
 
     .container {
       display: flex;
+      flex-wrap: wrap;
       gap: 20px;
       align-items: flex-start;
-      max-width: 460px;
+      justify-content: center;
+      width: 100%;
+      max-width: 900px;
     }
 
     .history {
-      width: 180px;
+      width: 100%;
+      max-width: 200px;
       border: 1px solid #ccc;
       border-radius: 12px;
       padding: 10px;
       background: #f0f0f0;
-      color: #000;
-      transition: background 0.3s, color 0.3s;
       display: flex;
       flex-direction: column;
-    }
-
-    .history h4 {
-      margin: 10px 0;
-      font-size: 1rem;
+      color: #000;
+      transition: background 0.3s, color 0.3s;
     }
 
     .controls {
       display: flex;
-      gap: 5px;
+      justify-content: space-between;
       margin-bottom: 10px;
     }
 
     .controls button {
-      flex: 1;
       font-size: 1em;
-      padding: 8px;
+      padding: 6px 10px;
       border-radius: 6px;
       border: none;
       background-color: #ddd;
       cursor: pointer;
+      flex: 1;
     }
 
     .controls button:hover {
       background-color: #bbb;
+    }
+
+    .history h4 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    #historyContent {
+      flex: 1;
+      overflow-y: auto;
     }
 
     .calculator {
@@ -124,12 +128,7 @@
       width: 100%;
     }
 
-    #historyContent {
-      flex: 1;
-      overflow-y: auto;
-    }
-
-    /* Dark mode */
+    /* Dark Mode */
     body.dark {
       background: #121212;
       color: #fff;
@@ -165,65 +164,82 @@
       color: #000;
     }
 
-    /* Responsive scaling */
-    @media (max-width: 600px) {
-      .scalable {
-        transform: scale(0.8);
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .history {
+        width: 100%;
+        max-width: 100%;
+        order: 2;
+      }
+
+      .calculator {
+        order: 1;
       }
     }
 
-    @media (max-width: 450px) {
-      .scalable {
-        transform: scale(0.7);
+    @media (max-width: 400px) {
+      .buttons {
+        gap: 6px;
       }
-    }
 
-    @media (max-width: 350px) {
-      .scalable {
-        transform: scale(0.6);
+      .buttons button {
+        height: 45px;
+        width: 45px;
+        font-size: 0.9em;
+      }
+
+      .buttons .wide {
+        font-size: 0.9em;
+      }
+
+      .display {
+        font-size: 1.5em;
       }
     }
   </style>
 </head>
 <body>
-  <div class="scale-wrapper">
-    <div class="scalable">
-      <div class="container">
-        <div class="history" id="historyPanel">
-          <div class="controls">
-            <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
-          </div>
-          <h4>History</h4>
-          <div id="historyContent"></div>
+  <div class="wrapper">
+    <div class="container">
+      <div class="history" id="historyPanel">
+        <div class="controls">
+          <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
         </div>
+        <h4>History</h4>
+        <div id="historyContent"></div>
+      </div>
 
-        <div id="calculator" class="calculator">
-          <div id="display" class="display">0</div>
-          <div class="buttons">
-            <button onclick="clearDisplay()">AC</button>
-            <button onclick="backspace()">⌫</button>
-            <button onclick="appendValue('%')">%</button>
-            <button onclick="appendValue('/')">÷</button>
+      <div id="calculator" class="calculator">
+        <div id="display" class="display">0</div>
+        <div class="buttons">
+          <button onclick="clearDisplay()">AC</button>
+          <button onclick="backspace()">⌫</button>
+          <button onclick="appendValue('%')">%</button>
+          <button onclick="appendValue('/')">÷</button>
 
-            <button onclick="appendValue('7')">7</button>
-            <button onclick="appendValue('8')">8</button>
-            <button onclick="appendValue('9')">9</button>
-            <button onclick="appendValue('*')">×</button>
+          <button onclick="appendValue('7')">7</button>
+          <button onclick="appendValue('8')">8</button>
+          <button onclick="appendValue('9')">9</button>
+          <button onclick="appendValue('*')">×</button>
 
-            <button onclick="appendValue('4')">4</button>
-            <button onclick="appendValue('5')">5</button>
-            <button onclick="appendValue('6')">6</button>
-            <button onclick="appendValue('-')">−</button>
+          <button onclick="appendValue('4')">4</button>
+          <button onclick="appendValue('5')">5</button>
+          <button onclick="appendValue('6')">6</button>
+          <button onclick="appendValue('-')">−</button>
 
-            <button onclick="appendValue('1')">1</button>
-            <button onclick="appendValue('2')">2</button>
-            <button onclick="appendValue('3')">3</button>
-            <button onclick="appendValue('+')">+</button>
+          <button onclick="appendValue('1')">1</button>
+          <button onclick="appendValue('2')">2</button>
+          <button onclick="appendValue('3')">3</button>
+          <button onclick="appendValue('+')">+</button>
 
-            <button class="wide" onclick="appendValue('0')">0</button>
-            <button onclick="appendValue('.')">.</button>
-            <button onclick="calculate()">=</button>
-          </div>
+          <button class="wide" onclick="appendValue('0')">0</button>
+          <button onclick="appendValue('.')">.</button>
+          <button onclick="calculate()">=</button>
         </div>
       </div>
     </div>
@@ -283,9 +299,8 @@
 
     function matchPanelHeights() {
       const calculator = document.getElementById('calculator');
-      const historyPanel = document.getElementById('historyPanel');
-      const calculatorHeight = calculator.offsetHeight;
-      historyPanel.style.height = calculatorHeight + 'px';
+      const history = document.getElementById('historyPanel');
+      history.style.height = calculator.offsetHeight + 'px';
     }
 
     window.addEventListener('load', matchPanelHeights);
