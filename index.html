@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>Smart Calculator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * {
       box-sizing: border-box;
@@ -12,110 +11,92 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: transparent;
       font-family: sans-serif;
-      overflow: hidden;
-    }
-
-    body {
+      height: 100%;
+      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      background: transparent;
     }
 
-    .scalable-wrapper {
-      transform: scale(1);
+    .scale-wrapper {
+      /* container that scales */
       transform-origin: top left;
       transition: transform 0.3s ease;
-    }
-
-    @media (max-width: 900px) {
-      .scalable-wrapper {
-        transform: scale(0.9);
-      }
-    }
-
-    @media (max-width: 700px) {
-      .scalable-wrapper {
-        transform: scale(0.8);
-      }
-    }
-
-    @media (max-width: 550px) {
-      .scalable-wrapper {
-        transform: scale(0.7);
-      }
-    }
-
-    @media (max-width: 400px) {
-      .scalable-wrapper {
-        transform: scale(0.6);
-      }
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
     }
 
     .container {
       display: flex;
       gap: 20px;
+      align-items: stretch;
+      max-width: 460px;
     }
 
     .history {
-      width: 200px;
-      height: 370px;
-      padding: 10px;
-      border-radius: 12px;
+      width: 180px;
       border: 1px solid #ccc;
+      border-radius: 12px;
+      padding: 10px;
       background: #f0f0f0;
+      color: #000;
+      max-height: 352px;
       display: flex;
       flex-direction: column;
     }
 
+    .history h4 {
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+
     .controls {
+      display: flex;
+      gap: 5px;
       margin-bottom: 10px;
     }
 
     .controls button {
-      width: 100%;
-      padding: 6px;
-      border: none;
+      flex: 1;
+      font-size: 1em;
+      padding: 8px;
       border-radius: 6px;
-      background: #ddd;
+      border: none;
+      background-color: #ddd;
       cursor: pointer;
     }
 
     .controls button:hover {
-      background: #bbb;
-    }
-
-    .history h4 {
-      margin: 0 0 10px;
-      font-size: 1rem;
-    }
-
-    #historyContent {
-      flex: 1;
-      overflow-y: auto;
+      background-color: #bbb;
     }
 
     .calculator {
-      width: 270px;
-      height: 370px;
+      width: max-content;
       padding: 15px;
       border: 1px solid #ccc;
       border-radius: 12px;
       background: #fff;
+      color: #000;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      min-height: 352px;
+      box-sizing: border-box;
     }
 
     .display {
       font-size: 1.8em;
       text-align: right;
       padding: 10px;
-      margin-bottom: 10px;
-      background: #f2f2f2;
+      margin-bottom: 15px;
       border-radius: 8px;
+      background: #f2f2f2;
+      min-width: 220px;
+      box-sizing: border-box;
     }
 
     .buttons {
@@ -125,15 +106,19 @@
     }
 
     .buttons button {
-      height: 45px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
       font-size: 1em;
       border-radius: 50%;
       border: 1px solid #000;
       background: #fff;
       color: #000;
       cursor: pointer;
-      width: 100%;
       transition: all 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
     }
 
     .buttons button:hover {
@@ -144,9 +129,28 @@
     .buttons .wide {
       grid-column: span 2;
       border-radius: 25px;
+      width: 100%;
+      aspect-ratio: auto;
+      height: 50px; /* fixed height for wide button */
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1em;
+      border-radius: 25px;
+      border: 1px solid #000;
+      background: #fff;
+      color: #000;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
-    /* Dark Mode */
+    .buttons .wide:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* Dark mode */
     body.dark {
       background: transparent;
       color: #fff;
@@ -181,17 +185,36 @@
       background: #fff;
       color: #000;
     }
+
+    /* Responsive scaling */
+    @media (max-width: 600px) {
+      .scale-wrapper {
+        transform: scale(0.8);
+      }
+    }
+
+    @media (max-width: 450px) {
+      .scale-wrapper {
+        transform: scale(0.7);
+      }
+    }
+
+    @media (max-width: 350px) {
+      .scale-wrapper {
+        transform: scale(0.6);
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="scalable-wrapper">
+  <div class="scale-wrapper" id="scaleWrapper">
     <div class="container">
       <div class="history" id="historyPanel">
         <div class="controls">
           <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
         </div>
         <h4>History</h4>
-        <div id="historyContent"></div>
+        <div id="historyContent" style="flex:1; overflow-y:auto;"></div>
       </div>
 
       <div id="calculator" class="calculator">
@@ -238,7 +261,7 @@
     function calculate() {
       const display = document.getElementById('display');
       try {
-        const expression = display.textContent;
+        const expression = display.textContent.replace(/÷/g, '/').replace(/×/g, '*');
         const result = eval(expression);
         display.textContent = result;
         addToHistory(expression, result);
