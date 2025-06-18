@@ -39,8 +39,8 @@
       max-width: 460px;
     }
 
-    .history, .calculator {
-      height: 352px;
+    .history {
+      width: 180px;
       border: 1px solid #ccc;
       border-radius: 12px;
       padding: 10px;
@@ -49,12 +49,7 @@
       transition: background 0.3s, color 0.3s;
       display: flex;
       flex-direction: column;
-    }
-
-    .calculator {
-      background: #fff;
-      color: #000;
-      padding: 15px;
+      height: 352px; /* Match calculator height */
     }
 
     .history h4 {
@@ -76,11 +71,29 @@
       border: none;
       background-color: #ddd;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
 
     .controls button:hover {
       background-color: #bbb;
+    }
+
+    .calculator {
+      width: max-content;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      background: #fff;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .display {
+      font-size: 1.8em;
+      text-align: right;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      background: #f2f2f2;
+      min-width: 220px;
     }
 
     .buttons {
@@ -98,7 +111,7 @@
       background: #fff;
       color: #000;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
     }
 
     .buttons button:hover {
@@ -115,36 +128,9 @@
     #historyContent {
       flex: 1;
       overflow-y: auto;
-      margin-top: 5px;
     }
 
-    .display {
-      font-size: 1.8em;
-      text-align: right;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      background: #f2f2f2;
-      min-width: 220px;
-      transition: background-color 0.3s ease;
-    }
-
-    /* Animation for display flash on calculation */
-    .display.flash {
-      animation: flashAnim 0.3s ease;
-    }
-
-    @keyframes flashAnim {
-      0%, 100% { background-color: #f2f2f2; }
-      50% { background-color: #d6ffd6; }
-    }
-
-    /* Button pressed animation */
-    .buttons button.pressed,
-    .controls button.pressed {
-      transform: scale(0.9);
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    }
+    /* Removed #seeMore */
 
     /* Dark mode */
     body.dark {
@@ -208,61 +194,45 @@
       <div class="container">
         <div class="history" id="historyPanel">
           <div class="controls">
-            <button id="themeToggle" onclick="playClickSound(this); toggleDarkMode()">Dark</button>
+            <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
           </div>
           <h4>History</h4>
           <div id="historyContent"></div>
-          <!-- See More button removed -->
         </div>
 
         <div id="calculator" class="calculator">
           <div id="display" class="display">0</div>
           <div class="buttons">
-            <button onclick="playClickSound(this); clearDisplay()">AC</button>
-            <button onclick="playClickSound(this); backspace()">⌫</button>
-            <button onclick="playClickSound(this); appendValue('%')">%</button>
-            <button onclick="playClickSound(this); appendValue('/')">÷</button>
+            <button onclick="clearDisplay()">AC</button>
+            <button onclick="backspace()">⌫</button>
+            <button onclick="appendValue('%')">%</button>
+            <button onclick="appendValue('/')">÷</button>
 
-            <button onclick="playClickSound(this); appendValue('7')">7</button>
-            <button onclick="playClickSound(this); appendValue('8')">8</button>
-            <button onclick="playClickSound(this); appendValue('9')">9</button>
-            <button onclick="playClickSound(this); appendValue('*')">×</button>
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('*')">×</button>
 
-            <button onclick="playClickSound(this); appendValue('4')">4</button>
-            <button onclick="playClickSound(this); appendValue('5')">5</button>
-            <button onclick="playClickSound(this); appendValue('6')">6</button>
-            <button onclick="playClickSound(this); appendValue('-')">−</button>
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button onclick="appendValue('-')">−</button>
 
-            <button onclick="playClickSound(this); appendValue('1')">1</button>
-            <button onclick="playClickSound(this); appendValue('2')">2</button>
-            <button onclick="playClickSound(this); appendValue('3')">3</button>
-            <button onclick="playClickSound(this); appendValue('+')">+</button>
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button onclick="appendValue('+')">+</button>
 
-            <button class="wide" onclick="playClickSound(this); appendValue('0')">0</button>
-            <button onclick="playClickSound(this); appendValue('.')">.</button>
-            <button onclick="playClickSound(this); calculate()">=</button>
+            <button class="wide" onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+            <button onclick="calculate()">=</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Minimal click sound -->
-  <audio id="clickSound" src="https://actions.google.com/sounds/v1/buttons/button_press.wav" preload="auto"></audio>
-
   <script>
-    const clickSound = document.getElementById('clickSound');
-
-    function playClickSound(button) {
-      clickSound.currentTime = 0;
-      clickSound.play();
-
-      button.classList.add('pressed');
-      setTimeout(() => {
-        button.classList.remove('pressed');
-      }, 150);
-    }
-
     function appendValue(val) {
       const display = document.getElementById('display');
       if (display.textContent === '0' || display.textContent === 'Error') {
@@ -279,10 +249,6 @@
         const result = eval(expression);
         display.textContent = result;
         addToHistory(expression, result);
-
-        // Flash animation on display
-        display.classList.add('flash');
-        setTimeout(() => display.classList.remove('flash'), 300);
       } catch {
         display.textContent = 'Error';
       }
