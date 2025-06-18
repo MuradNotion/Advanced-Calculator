@@ -12,36 +12,62 @@
     html, body {
       margin: 0;
       padding: 0;
-      font-family: sans-serif;
       background: transparent;
+      font-family: sans-serif;
+      overflow: hidden;
     }
 
     body {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
       height: 100vh;
+    }
+
+    .scalable-wrapper {
+      transform: scale(1);
+      transform-origin: top left;
+      transition: transform 0.3s ease;
+    }
+
+    @media (max-width: 900px) {
+      .scalable-wrapper {
+        transform: scale(0.9);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .scalable-wrapper {
+        transform: scale(0.8);
+      }
+    }
+
+    @media (max-width: 550px) {
+      .scalable-wrapper {
+        transform: scale(0.7);
+      }
+    }
+
+    @media (max-width: 400px) {
+      .scalable-wrapper {
+        transform: scale(0.6);
+      }
     }
 
     .container {
       display: flex;
-      align-items: flex-start;
       gap: 20px;
-      flex-wrap: nowrap;
-      max-width: 100%;
     }
 
     .history {
       width: 200px;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      padding: 10px;
-      background: #f0f0f0;
       height: 370px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      background: #f0f0f0;
       display: flex;
       flex-direction: column;
-      flex-shrink: 0;
     }
 
     .controls {
@@ -49,17 +75,16 @@
     }
 
     .controls button {
-      font-size: 1em;
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: none;
-      background-color: #ddd;
-      cursor: pointer;
       width: 100%;
+      padding: 6px;
+      border: none;
+      border-radius: 6px;
+      background: #ddd;
+      cursor: pointer;
     }
 
     .controls button:hover {
-      background-color: #bbb;
+      background: #bbb;
     }
 
     .history h4 {
@@ -88,9 +113,9 @@
       font-size: 1.8em;
       text-align: right;
       padding: 10px;
-      border-radius: 8px;
-      background: #f2f2f2;
       margin-bottom: 10px;
+      background: #f2f2f2;
+      border-radius: 8px;
     }
 
     .buttons {
@@ -107,8 +132,8 @@
       background: #fff;
       color: #000;
       cursor: pointer;
-      transition: all 0.2s;
       width: 100%;
+      transition: all 0.2s;
     }
 
     .buttons button:hover {
@@ -119,7 +144,6 @@
     .buttons .wide {
       grid-column: span 2;
       border-radius: 25px;
-      width: 100%;
     }
 
     /* Dark Mode */
@@ -157,62 +181,46 @@
       background: #fff;
       color: #000;
     }
-
-    @media (max-width: 600px) {
-      body {
-        transform: scale(0.9);
-      }
-    }
-
-    @media (max-width: 500px) {
-      body {
-        transform: scale(0.8);
-      }
-    }
-
-    @media (max-width: 400px) {
-      body {
-        transform: scale(0.7);
-      }
-    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="history" id="historyPanel">
-      <div class="controls">
-        <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
+  <div class="scalable-wrapper">
+    <div class="container">
+      <div class="history" id="historyPanel">
+        <div class="controls">
+          <button id="themeToggle" onclick="toggleDarkMode()">Dark</button>
+        </div>
+        <h4>History</h4>
+        <div id="historyContent"></div>
       </div>
-      <h4>History</h4>
-      <div id="historyContent"></div>
-    </div>
 
-    <div id="calculator" class="calculator">
-      <div id="display" class="display">0</div>
-      <div class="buttons">
-        <button onclick="clearDisplay()">AC</button>
-        <button onclick="backspace()">⌫</button>
-        <button onclick="appendValue('%')">%</button>
-        <button onclick="appendValue('/')">÷</button>
+      <div id="calculator" class="calculator">
+        <div id="display" class="display">0</div>
+        <div class="buttons">
+          <button onclick="clearDisplay()">AC</button>
+          <button onclick="backspace()">⌫</button>
+          <button onclick="appendValue('%')">%</button>
+          <button onclick="appendValue('/')">÷</button>
 
-        <button onclick="appendValue('7')">7</button>
-        <button onclick="appendValue('8')">8</button>
-        <button onclick="appendValue('9')">9</button>
-        <button onclick="appendValue('*')">×</button>
+          <button onclick="appendValue('7')">7</button>
+          <button onclick="appendValue('8')">8</button>
+          <button onclick="appendValue('9')">9</button>
+          <button onclick="appendValue('*')">×</button>
 
-        <button onclick="appendValue('4')">4</button>
-        <button onclick="appendValue('5')">5</button>
-        <button onclick="appendValue('6')">6</button>
-        <button onclick="appendValue('-')">−</button>
+          <button onclick="appendValue('4')">4</button>
+          <button onclick="appendValue('5')">5</button>
+          <button onclick="appendValue('6')">6</button>
+          <button onclick="appendValue('-')">−</button>
 
-        <button onclick="appendValue('1')">1</button>
-        <button onclick="appendValue('2')">2</button>
-        <button onclick="appendValue('3')">3</button>
-        <button onclick="appendValue('+')">+</button>
+          <button onclick="appendValue('1')">1</button>
+          <button onclick="appendValue('2')">2</button>
+          <button onclick="appendValue('3')">3</button>
+          <button onclick="appendValue('+')">+</button>
 
-        <button class="wide" onclick="appendValue('0')">0</button>
-        <button onclick="appendValue('.')">.</button>
-        <button onclick="calculate()">=</button>
+          <button class="wide" onclick="appendValue('0')">0</button>
+          <button onclick="appendValue('.')">.</button>
+          <button onclick="calculate()">=</button>
+        </div>
       </div>
     </div>
   </div>
