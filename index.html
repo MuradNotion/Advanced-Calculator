@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Calculator with History</title>
+  <title>Custom Grid Calculator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * {
@@ -12,8 +12,8 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: transparent;
       font-family: 'Segoe UI', sans-serif;
+      background: transparent;
       width: 100%;
       height: 100%;
       display: flex;
@@ -24,24 +24,24 @@
     .calculator-wrapper {
       margin: 16px;
       transform-origin: top left;
-      transform: scale(0.85);
+      transform: scale(0.9);
     }
 
     @media (max-width: 800px) {
       .calculator-wrapper {
-        transform: scale(0.75);
+        transform: scale(0.8);
       }
     }
 
     @media (max-width: 600px) {
       .calculator-wrapper {
-        transform: scale(0.65);
+        transform: scale(0.7);
       }
     }
 
     @media (max-width: 400px) {
       .calculator-wrapper {
-        transform: scale(0.55);
+        transform: scale(0.6);
       }
     }
 
@@ -54,29 +54,13 @@
       color: #fff;
       padding: 16px;
       gap: 16px;
-      position: relative;
-    }
-
-    .dot-toggle {
-      position: absolute;
-      bottom: 4px;
-      left: 4px;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #888;
-      border: 1px solid #444;
-      cursor: pointer;
-      z-index: 2;
-      transition: all 0.3s;
     }
 
     .history-panel {
       width: 140px;
-      max-height: 100%;
-      overflow-y: auto;
       border-right: 1px solid #555;
       padding-right: 12px;
+      overflow-y: auto;
     }
 
     .history-panel h3 {
@@ -98,29 +82,32 @@
     }
 
     .main-calc {
-      width: 240px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(5, 50px);
-      gap: 10px;
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 280px;
     }
 
     .display {
-      grid-column: 1 / 5;
-      font-size: 1.8rem;
-      padding: 10px 14px;
+      font-size: 2rem;
+      padding: 12px 16px;
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.1);
       text-align: right;
       user-select: none;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(4, 60px);
+      gap: 10px;
     }
 
     .buttons button {
       font-size: 1.1rem;
       font-weight: bold;
-      border-radius: 50px; /* updated */
+      border-radius: 50px;
       border: 1px solid #888;
       background: rgba(255, 255, 255, 0.1);
       color: #fff;
@@ -129,7 +116,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 0;
       width: 100%;
       height: 100%;
     }
@@ -139,72 +125,11 @@
       color: #000;
     }
 
-    /* Positioning buttons explicitly for the new layout */
-
-    /* "+" button on left bottom corner spanning two rows */
-    .btn-plus {
-      grid-column: 1;
-      grid-row: 4 / 6;
-      border-radius: 50px;
-    }
-
-    /* Buttons container grid inside main-calc */
-    .buttons {
-      display: contents;
-    }
-
-    /* Other buttons position */
-
-    /* Row 1 */
-    #btn-ac { grid-column: 2; grid-row: 1; }
-    #btn-backspace { grid-column: 3; grid-row: 1; }
-    #btn-percent { grid-column: 4; grid-row: 1; }
-
-    /* Row 2 */
-    #btn-7 { grid-column: 2; grid-row: 2; }
-    #btn-8 { grid-column: 3; grid-row: 2; }
-    #btn-9 { grid-column: 4; grid-row: 2; }
-
-    /* Row 3 */
-    #btn-4 { grid-column: 2; grid-row: 3; }
-    #btn-5 { grid-column: 3; grid-row: 3; }
-    #btn-6 { grid-column: 4; grid-row: 3; }
-
-    /* Row 4 */
-    #btn-1 { grid-column: 2; grid-row: 4; }
-    #btn-2 { grid-column: 3; grid-row: 4; }
-    #btn-3 { grid-column: 4; grid-row: 4; }
-
-    /* Row 5 */
-    #btn-0 { grid-column: 2; grid-row: 5; }
-    #btn-dot { grid-column: 3; grid-row: 5; }
-    #btn-equal { grid-column: 4; grid-row: 5; }
-
-    /* "-" button */
-    #btn-minus {
-      grid-column: 5; /* outside? We'll keep it inside grid - let's put it at 5th col */
-      display: none; /* Remove or reposition? For this design, let's remove it */
-    }
-
-    /* "×" button - replaced with "*" */
-    #btn-multiply {
-      grid-column: 1;
-      grid-row: 3;
-      border-radius: 50px;
-    }
-
-    /* Hide unused buttons if any */
-
-    /* Light mode styles */
+    /* Light Mode */
     body.light .calculator {
       background: rgba(255, 255, 255, 0.95);
-      border-color: #ccc;
       color: #000;
-    }
-
-    body.light .dot-toggle {
-      background: #333;
-      border-color: #aaa;
+      border-color: #ccc;
     }
 
     body.light .display {
@@ -234,39 +159,37 @@
 </head>
 <body>
   <div class="calculator-wrapper">
-    <div id="calculator" class="calculator">
-      <div class="dot-toggle" onclick="toggleDarkMode()"></div>
+    <div class="calculator">
       <div class="history-panel">
         <h3>History</h3>
         <ul id="historyList"></ul>
       </div>
       <div class="main-calc">
         <div id="display" class="display">0</div>
-
         <div class="buttons">
-          <button id="btn-ac" onclick="clearDisplay()">AC</button>
-          <button id="btn-backspace" onclick="backspace()">⌫</button>
-          <button id="btn-percent" onclick="appendValue('%')">%</button>
-          <button id="btn-divide" onclick="appendValue('/')">÷</button>
+          <button onclick="clearDisplay()">AC</button>
+          <button onclick="appendValue('7')">7</button>
+          <button onclick="appendValue('4')">4</button>
+          <button onclick="appendValue('1')">1</button>
+          <button onclick="appendValue('0')">0</button>
 
-          <button id="btn-7" onclick="appendValue('7')">7</button>
-          <button id="btn-8" onclick="appendValue('8')">8</button>
-          <button id="btn-9" onclick="appendValue('9')">9</button>
-          <button id="btn-multiply" onclick="appendValue('*')">×</button>
+          <button onclick="backspace()">⌫</button>
+          <button onclick="appendValue('8')">8</button>
+          <button onclick="appendValue('5')">5</button>
+          <button onclick="appendValue('2')">2</button>
+          <button onclick="appendValue('.')">.</button>
 
-          <button id="btn-4" onclick="appendValue('4')">4</button>
-          <button id="btn-5" onclick="appendValue('5')">5</button>
-          <button id="btn-6" onclick="appendValue('6')">6</button>
+          <button onclick="appendValue('%')">%</button>
+          <button onclick="appendValue('9')">9</button>
+          <button onclick="appendValue('6')">6</button>
+          <button onclick="appendValue('3')">3</button>
+          <button onclick="calculate()">=</button>
 
-          <button id="btn-plus" class="btn-plus" onclick="appendValue('+')">+</button>
-
-          <button id="btn-1" onclick="appendValue('1')">1</button>
-          <button id="btn-2" onclick="appendValue('2')">2</button>
-          <button id="btn-3" onclick="appendValue('3')">3</button>
-
-          <button id="btn-0" onclick="appendValue('0')">0</button>
-          <button id="btn-dot" onclick="appendValue('.')">.</button>
-          <button id="btn-equal" onclick="calculate()">=</button>
+          <button onclick="appendValue('/')">÷</button>
+          <button onclick="appendValue('*')">×</button>
+          <button onclick="appendValue('-')">−</button>
+          <button onclick="appendValue('+')">+</button>
+          <div></div>
         </div>
       </div>
     </div>
@@ -314,8 +237,9 @@
       historyList.prepend(li);
     }
 
-    function toggleDarkMode() {
-      document.body.classList.toggle('light');
+    // Optional: enable system-based dark/light mode
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      document.body.classList.add('light');
     }
   </script>
 </body>
