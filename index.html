@@ -1,4 +1,157 @@
-<!-- Replace inside your <body> section -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Advanced Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background: transparent;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .calculator-wrapper {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform-origin: center center;
+    }
+
+    .calculator {
+      display: flex;
+      gap: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #000;
+      padding: 20px;
+      position: relative;
+    }
+
+    .main-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+    }
+
+    .display {
+      font-size: 2em;
+      text-align: right;
+      padding: 15px 20px;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.05);
+      user-select: none;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 60px);
+      grid-template-rows: repeat(5, 60px);
+      gap: 12px;
+    }
+
+    .buttons button {
+      width: 60px;
+      height: 60px;
+      font-size: 1.2em;
+      font-weight: 600;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      background: rgba(0, 0, 0, 0.05);
+      color: #000;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      user-select: none;
+    }
+
+    .buttons button:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    .buttons .plus {
+      grid-column: 4;
+      grid-row: span 2;
+      height: 132px;
+      border-radius: 50px;
+    }
+
+    .history-panel {
+      width: 200px;
+      border-right: 1px solid #ccc;
+      padding-right: 16px;
+      padding-top: 4px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+    }
+
+    .history-panel h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+
+    .history-entry {
+      margin-bottom: 6px;
+      border-bottom: 1px dashed #bbb;
+      padding-bottom: 4px;
+    }
+
+    body.dark .calculator {
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      border-color: #444;
+    }
+
+    body.dark .display {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    body.dark .buttons button {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-color: #888;
+    }
+
+    body.dark .buttons button:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    body.dark .history-panel {
+      border-color: #555;
+      color: #fff;
+    }
+
+    body.dark .history-panel h3 {
+      border-color: #666;
+    }
+
+    body.dark .history-entry {
+      border-color: #666;
+    }
+  </style>
+</head>
 <body>
   <div class="calculator-wrapper" id="calculatorWrapper">
     <div class="calculator" id="calculator">
@@ -97,18 +250,6 @@
       wrapper.style.transform = `scale(${scale})`;
     }
 
-    // Toggle mode only if click is outside buttons, display, and history
-    window.addEventListener('click', (e) => {
-      const calculator = document.getElementById('calculator');
-      const buttons = calculator.querySelector('.buttons');
-      const display = document.getElementById('display');
-      const history = document.getElementById('history');
-
-      if (!buttons.contains(e.target) && !display.contains(e.target) && !history.contains(e.target)) {
-        toggleDarkMode();
-      }
-    });
-
     window.addEventListener('resize', scaleCalculator);
     window.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem('darkMode') === 'true') {
@@ -116,5 +257,18 @@
       }
       setTimeout(scaleCalculator, 10);
     });
+
+    // Add dark mode toggle on click outside buttons/display/history
+    document.getElementById('calculator').addEventListener('click', function(e) {
+      const target = e.target;
+      const isButton = target.closest('.buttons button');
+      const isDisplay = target.closest('#display');
+      const isHistory = target.closest('.history-panel');
+
+      if (!isButton && !isDisplay && !isHistory) {
+        toggleDarkMode();
+      }
+    });
   </script>
 </body>
+</html>
